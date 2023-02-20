@@ -1,0 +1,25 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  labels:
+    app: node-density-{{.Replica}}
+  name: {{.JobName}}-{{.Replica}}
+spec:
+  nodeName: worker-1.garanti.lab.psi.pnq2.redhat.com
+  #nodeSelector:
+  #  node-role.kubernetes.io/worker: ""
+  tolerations:
+  - key: os
+    value: Windows
+    effect: NoSchedule
+  containers:
+  - image: {{.containerImage}}
+    name: node-density
+    resources:
+      requests:
+        memory: "5Mi"
+        cpu: "120m"
+    imagePullPolicy: IfNotPresent
+    command: ["/usr/bin/stress-ng"]
+    #args: ["--cpu", "32", "--cpu-load", "12"]
+    args: ["--cpu", "32", "--cpu-load", "100"]

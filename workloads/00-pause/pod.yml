@@ -1,0 +1,22 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  labels:
+    app: node-density-{{.Iteration}}
+  name: {{.JobName}}-{{.Iteration}}
+spec:
+  nodeSelector:
+    #node-role.kubernetes.io/worker: ""
+    kubernetes.io/hostname: "worker-0.garanti.lab.psi.pnq2.redhat.com"
+  tolerations:
+  - key: os
+    value: Windows
+    effect: NoSchedule
+  containers:
+  - image: {{.containerImage}}
+    name: node-density
+    resources:
+      requests:
+        memory: "10Mi"
+        cpu: "10m"
+    imagePullPolicy: IfNotPresent
